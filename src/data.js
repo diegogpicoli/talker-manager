@@ -7,6 +7,13 @@ const readTalker = async () => {
   return JSON.parse(json);
 };
 
+const readTalkerId = async (id) => {
+  const json = await readTalker();
+  const filterJson = json.find((item) => Number(item.id) === Number(id));
+  return filterJson;
+};
+
 module.exports = {
   readTalker,
+  readTalkerId,
 };
