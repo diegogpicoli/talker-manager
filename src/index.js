@@ -1,7 +1,14 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { readTalker, readTalkerId, generateToken } = require('./data');
-const { loginValidation } = require('./middlewares');
+const { readTalker, readTalkerId, generateToken, addTalker } = require('./data');
+const { 
+  loginValidation, 
+  tokenValidation, 
+  nameValidation, 
+  ageValidation,
+  talkValidation,
+  rateValidation,
+ } = require('./middlewares');
 
 const app = express();
 app.use(bodyParser.json());
@@ -33,6 +40,17 @@ app.get('/talker/:id', async (request, response) => {
 app.post('/login', loginValidation, async (_req, res) => {
   const token = generateToken();
   res.status(HTTP_OK_STATUS).json({ token });
+});
+
+app.post('/talker', 
+  tokenValidation, 
+  nameValidation, 
+  ageValidation,
+  talkValidation,
+  rateValidation, async (req, res) => {
+  const { body } = req;
+  const retorno = await addTalker(body);
+  res.status(201).json(retorno);
 });
 
 app.listen(PORT, () => {
