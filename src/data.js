@@ -41,10 +41,19 @@ const putTalker = async (id, object) => {
   return json[jsonIndex];
 };
 
+const deleteTalker = async (id) => {
+  const json = await readTalker();
+  const filterJson = json.filter((item) => Number(item.id) !== Number(id));
+  const newJson = JSON.stringify(filterJson, null, 2);
+  await fs.writeFile(resolve(__dirname, './talker.json'), newJson);
+  return filterJson;
+};
+
 module.exports = {
   readTalker,
   readTalkerId,
   generateToken,
   addTalker,
   putTalker,
+  deleteTalker,
 };

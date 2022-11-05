@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { readTalker, readTalkerId, generateToken, addTalker, putTalker } = require('./data');
+const { readTalker, 
+  readTalkerId, 
+  generateToken, addTalker, putTalker, deleteTalker } = require('./data');
 const { 
   loginValidation, 
   tokenValidation, 
@@ -42,23 +44,33 @@ app.post('/login', loginValidation, async (_req, res) => {
   res.status(HTTP_OK_STATUS).json({ token });
 });
 
-app.use(tokenValidation, 
-  nameValidation, 
-  ageValidation,
-  talkValidation,
-  rateValidation);
+app.use(tokenValidation);
 
-app.post('/talker', async (req, res) => {
+app.post('/talker', 
+nameValidation, 
+ageValidation,
+talkValidation,
+rateValidation, async (req, res) => {
   const { body } = req;
   const retorno = await addTalker(body);
   res.status(201).json(retorno);
 });
 
-app.put('/talker/:id', async (req, res) => {
+app.put('/talker/:id',  
+nameValidation, 
+ageValidation,
+talkValidation,
+rateValidation, async (req, res) => {
   const { params: { id } } = req;
   const { body } = req;
   const retorno = await putTalker(id, body);
   res.status(200).json(retorno);
+});
+
+app.delete('/talker/:id', async (req, res) => {
+  const { params: { id } } = req;
+  deleteTalker(id);
+  res.status(204).json();
 });
 
 app.listen(PORT, () => {
