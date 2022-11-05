@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const { readTalker, readTalkerId, generateToken, addTalker } = require('./data');
+const { readTalker, readTalkerId, generateToken, addTalker, putTalker } = require('./data');
 const { 
   loginValidation, 
   tokenValidation, 
@@ -42,15 +42,23 @@ app.post('/login', loginValidation, async (_req, res) => {
   res.status(HTTP_OK_STATUS).json({ token });
 });
 
-app.post('/talker', 
-  tokenValidation, 
+app.use(tokenValidation, 
   nameValidation, 
   ageValidation,
   talkValidation,
-  rateValidation, async (req, res) => {
+  rateValidation);
+
+app.post('/talker', async (req, res) => {
   const { body } = req;
   const retorno = await addTalker(body);
   res.status(201).json(retorno);
+});
+
+app.put('/talker/:id', async (req, res) => {
+  const { params: { id } } = req;
+  const { body } = req;
+  const retorno = await putTalker(id, body);
+  res.status(200).json(retorno);
 });
 
 app.listen(PORT, () => {
