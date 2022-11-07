@@ -49,6 +49,13 @@ const deleteTalker = async (id) => {
   return filterJson;
 };
 
+const searchTalker = async (query) => {
+  const json = await readTalker();
+  const filterJson = json.filter((item) => item.name.includes(query));
+  console.log(filterJson);
+  return filterJson;
+};
+
 module.exports = {
   readTalker,
   readTalkerId,
@@ -56,4 +63,5 @@ module.exports = {
   addTalker,
   putTalker,
   deleteTalker,
+  searchTalker,
 };

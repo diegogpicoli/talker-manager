@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const { readTalker, 
   readTalkerId, 
-  generateToken, addTalker, putTalker, deleteTalker } = require('./data');
+  generateToken, addTalker, putTalker, deleteTalker, searchTalker } = require('./data');
 const { 
   loginValidation, 
   tokenValidation, 
@@ -18,6 +18,13 @@ app.use(bodyParser.json());
 const HTTP_OK_STATUS = 200;
 const HTTP_NOT_FOUND_STATUS = 404;
 const PORT = '3000';
+
+app.get('/talker/search', tokenValidation, async (req, res) => {
+  const { q } = req.query;
+  console.log(q);
+  const retorno = await searchTalker(q);
+  res.status(200).json(retorno);
+});
 
 // não remova esse endpoint, e para o avaliador funcionar
 app.get('/', (_request, response) => {
