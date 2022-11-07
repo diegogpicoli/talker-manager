@@ -26,7 +26,7 @@ app.get('/talker/search', tokenValidation, async (req, res) => {
   res.status(200).json(retorno);
 });
 
-// não remova esse endpoint, e para o avaliador funcionar
+// não remova esse endpoint, para o avaliador funcionar
 app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
